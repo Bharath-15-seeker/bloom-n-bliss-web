@@ -81,8 +81,13 @@ function Index() {
 };
   return (
     <div className="relative min-h-screen overflow-x-hidden">
-     <AnimatePresence>{!opened && <Envelope onOpen={handleOpen} />}</AnimatePresence>
-
+     <AnimatePresence>
+    {!opened && (
+      <div className="w-full min-h-screen flex items-center justify-center">
+        <Envelope onOpen={handleOpen} />
+      </div>
+    )}
+  </AnimatePresence>
       {opened && (
         <>
           <ScrollProgress />
