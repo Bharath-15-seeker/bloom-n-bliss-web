@@ -43,22 +43,25 @@ function saveToCalendar() {
   URL.revokeObjectURL(url);
 }
 
+let globalAudio: HTMLAudioElement | null = null;
+
 function Index() {
   
   const [opened, setOpened] = useState(false);
   const [playing, setPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  useEffect(() => {
-    // Initialize audio
-    audioRef.current = new Audio(anishaSong);
-    audioRef.current.loop = true;
-    audioRef.current.volume = 0.35;
+ useEffect(() => {
+  if (!globalAudio) {
+    globalAudio = new Audio(anishaSong);
+    globalAudio.loop = true;
+    globalAudio.volume = 0.35;
+  }
+  audioRef.current = globalAudio;
 
-    return () => {
-      audioRef.current?.pause();
-    };
-  }, []);
+  // ← Remove the cleanup entirely, or leave it empty
+  return () => {};
+}, []);
   const handleOpen = () => {
     setOpened(true);
     // Start music immediately when opened
@@ -67,18 +70,18 @@ function Index() {
       .catch((err) => console.log("Playback delayed until interaction:", err));
   };
   const toggleMusic = () => {
-    if (!audioRef.current) return;
-    if (playing) {
-      audioRef.current.pause();
-      setPlaying(false);
-    } else {
-      audioRef.current.play();
-      setPlaying(true);
-    }
-  };
+  if (!audioRef.current) return;
+  if (audioRef.current.paused) {
+    audioRef.current.play();
+    setPlaying(true);
+  } else {
+    audioRef.current.pause();
+    setPlaying(false);
+  }
+};
   return (
     <div className="relative min-h-screen overflow-x-hidden">
-      <AnimatePresence>{!opened && <Envelope onOpen={() => setOpened(true)} />}</AnimatePresence>
+     <AnimatePresence>{!opened && <Envelope onOpen={handleOpen} />}</AnimatePresence>
 
       {opened && (
         <>
