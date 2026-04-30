@@ -1,3 +1,5 @@
+/*@import url('https://fonts.googleapis.com/css2?family=Pinyon+Script&display=swap');*/
+@import url('https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Cormorant+Upright:wght@400;500;600;700&family=Quicksand:wght@400;500;600&display=swap');
 @import "tailwindcss" source(none);
 @source "../src";
 @import "tw-animate-css";
@@ -5,11 +7,11 @@
 @custom-variant dark (&:is(.dark *));
 
 @font-face {
-  font-family: "Great Vibes";
+  font-family: "Pinyon Script";
   font-style: normal;
   font-weight: 400;
   font-display: swap;
-  src: url("https://fonts.gstatic.com/s/greatvibes/v19/RWmMoKWR9v4ksMfaWd_JN-XCg6UKDXlq.woff2") format("woff2");
+  src: url("https://fonts.gstatic.com/s/pinyonscript/v22/6xK3dSByS9n7tzs6xVt77mU_p9_I7NE.woff2") format("woff2");
 }
 @font-face {
   font-family: "Cormorant Garamond";
@@ -59,9 +61,9 @@
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-rose: var(--rose);
-  --font-script: "Great Vibes", cursive;
-  --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+ --font-script: "Great Vibes", cursive;
+  --font-serif: "Cormorant Garamond", serif;
+  --font-sans: "Quicksand", sans-serif;
 }
 
 :root {
@@ -132,7 +134,13 @@
 }
 
 @layer utilities {
-  .font-script { font-family: var(--font-script); }
+  .font-script {
+font-family: "Great Vibes", cursive !important;
+    font-weight: 400;
+    line-height: 1.2;
+    letter-spacing: 0;
+    text-transform: none;
+}
   .font-serif { font-family: var(--font-serif); }
 
   .glass {

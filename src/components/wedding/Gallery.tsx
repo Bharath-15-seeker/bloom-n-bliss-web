@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import img1 from "@/assets/couple-1.jpg";
-import img2 from "@/assets/couple-2.jpg";
-import img3 from "@/assets/couple-3.jpg";
-import img4 from "@/assets/couple-4.jpg";
+import img1 from "@/assets/DSC01128.JPG.jpeg";
+import img2 from "@/assets/update.JPG.jpeg";
+import img3 from "@/assets/DSC01656.JPG.jpeg";
+import img4 from "@/assets/DSC01387.JPG.jpeg";
 
 const slides = [
   { src: img1, caption: "The Beginning" },

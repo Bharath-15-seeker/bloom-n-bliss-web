@@ -62,7 +62,7 @@ export function ScratchCard() {
         <Sparkles className="w-6 h-6 text-gold mb-2" />
         <p className="text-xs uppercase tracking-[0.3em] text-rose-800/70">The Big Day</p>
         <h3 className="font-script text-4xl sm:text-5xl text-gradient-gold mt-1">29 May 2026</h3>
-        <p className="text-sm mt-1 text-rose-900/70">9:30 AM • Sree Mahal, Kovilpatti</p>
+        <p className="text-sm mt-1 text-rose-900/70">9:30 AM • Sri Mahal, Kovilpatti</p>
       </div>
 
       {revealed && (

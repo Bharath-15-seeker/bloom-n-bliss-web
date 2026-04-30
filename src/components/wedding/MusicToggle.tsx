@@ -1,13 +1,14 @@
 import { useEffect, useRef, useState } from "react";
 import { Music, VolumeX } from "lucide-react";
 import { motion } from "framer-motion";
-
+import anishaSong from "@/assets/anisatheme.mp3";
 export function MusicToggle() {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [playing, setPlaying] = useState(false);
 
+  
   useEffect(() => {
-    const audio = new Audio("https://cdn.pixabay.com/audio/2022/10/25/audio_946bc6c8b6.mp3");
+    const audio = new Audio(anishaSong);
     audio.loop = true;
     audio.volume = 0.35;
     audioRef.current = audio;

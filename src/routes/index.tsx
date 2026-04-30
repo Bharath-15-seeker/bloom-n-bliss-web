@@ -1,5 +1,4 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin, Calendar, Heart } from "lucide-react";
 import { Envelope } from "@/components/wedding/Envelope";
@@ -12,15 +11,17 @@ import { ScrollProgress } from "@/components/wedding/ScrollProgress";
 import { Section } from "@/components/wedding/Section";
 import hero from "@/assets/couple-1.jpg";
 import ornament from "@/assets/ornament.png";
+import { useState, useRef, useEffect } from "react";
+import anishaSong from "@/assets/anisatheme.mp3";
 
 export const Route = createFileRoute("/")({
   component: Index,
   head: () => ({
     meta: [
       { title: "Thamu & Snekha — Wedding Invitation" },
-      { name: "description", content: "Together with love, we invite you to celebrate the wedding of V. Thamu & M. Snekha on 29 May 2026 at Sree Mahal, Kovilpatti." },
+      { name: "description", content: "Together with love, we invite you to celebrate the wedding of V. Thamu & M. Snekha on 29 May 2026 at Sri Mahal, Kovilpatti." },
       { property: "og:title", content: "Thamu & Snekha — Wedding Invitation" },
-      { property: "og:description", content: "Join us on 29 May 2026 at Sree Mahal, Kovilpatti." },
+      { property: "og:description", content: "Join us on 29 May 2026 at Sri Mahal, Kovilpatti." },
       { property: "og:type", content: "website" },
     ],
   }),
@@ -29,10 +30,10 @@ export const Route = createFileRoute("/")({
 const ENGAGEMENT = new Date("2026-05-28T19:00:00+05:30");
 const WEDDING = new Date("2026-05-29T09:30:00+05:30");
 const VENUE_URL = "https://maps.app.goo.gl/soSLsRyeNnXZ2tVU7";
-const MAP_EMBED = "https://www.google.com/maps?q=Sree+Mahal+Kovilpatti&output=embed";
+const MAP_EMBED = "https://www.google.com/maps?q=Sri+Mahal+Kovilpatti&output=embed";
 
 function saveToCalendar() {
-  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Thamu & Snekha Wedding\nDTSTART:20260529T040000Z\nDTEND:20260529T070000Z\nLOCATION:Sree Mahal, Kovilpatti\nDESCRIPTION:Wedding ceremony of V. Thamu & M. Snekha\nEND:VEVENT\nEND:VCALENDAR`;
+  const ics = `BEGIN:VCALENDAR\nVERSION:2.0\nBEGIN:VEVENT\nSUMMARY:Thamu & Snekha Wedding\nDTSTART:20260529T040000Z\nDTEND:20260529T070000Z\nLOCATION:Sri Mahal, Kovilpatti\nDESCRIPTION:Wedding ceremony of V. Thamu & M. Snekha\nEND:VEVENT\nEND:VCALENDAR`;
   const blob = new Blob([ics], { type: "text/calendar" });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -43,8 +44,38 @@ function saveToCalendar() {
 }
 
 function Index() {
+  
   const [opened, setOpened] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  useEffect(() => {
+    // Initialize audio
+    audioRef.current = new Audio(anishaSong);
+    audioRef.current.loop = true;
+    audioRef.current.volume = 0.35;
+
+    return () => {
+      audioRef.current?.pause();
+    };
+  }, []);
+  const handleOpen = () => {
+    setOpened(true);
+    // Start music immediately when opened
+    audioRef.current?.play()
+      .then(() => setPlaying(true))
+      .catch((err) => console.log("Playback delayed until interaction:", err));
+  };
+  const toggleMusic = () => {
+    if (!audioRef.current) return;
+    if (playing) {
+      audioRef.current.pause();
+      setPlaying(false);
+    } else {
+      audioRef.current.play();
+      setPlaying(true);
+    }
+  };
   return (
     <div className="relative min-h-screen overflow-x-hidden">
       <AnimatePresence>{!opened && <Envelope onOpen={() => setOpened(true)} />}</AnimatePresence>
@@ -52,7 +83,7 @@ function Index() {
       {opened && (
         <>
           <ScrollProgress />
-          <MusicToggle />
+          <MusicToggle playing={playing} toggle={toggleMusic} />
           <FloatingHearts count={10} type="heart" />
           <FloatingHearts count={8} type="petal" />
 
@@ -78,9 +109,11 @@ function Index() {
               <div className="glass rounded-3xl p-8 sm:p-12">
                 <img src={ornament} alt="" width={64} height={64} className="mx-auto opacity-90 mb-4" />
                 <p className="text-xs sm:text-sm uppercase tracking-[0.4em] text-rose-800/80 mb-3">Wedding Invitation</p>
-                <h1 className="font-script text-6xl sm:text-8xl text-gradient-gold leading-[0.9]">Thamu</h1>
-                <p className="font-serif italic text-2xl sm:text-3xl my-2 text-rose-900/70">&amp;</p>
-                <h1 className="font-script text-6xl sm:text-8xl text-gradient-gold leading-[0.9]">Snekha</h1>
+                <h1 className="font-script font-normal text-6xl sm:text-8xl text-gradient-gold">Thamu</h1>
+                <p className="font-script text-2xl text-rose-500">
+  &amp;
+</p>
+                <h1 className="font-script font-normal text-6xl sm:text-8xl text-gradient-gold">Snekha</h1>
                 <div className="gold-divider w-48 mx-auto my-6" />
                 <p className="text-sm sm:text-base text-rose-900/80 italic font-serif">
                   "Together with love, we invite you to celebrate our special moments…"
@@ -166,7 +199,7 @@ function Index() {
             <div className="glass rounded-3xl overflow-hidden">
               <div className="p-6 sm:p-8 text-center">
                 <MapPin className="w-7 h-7 mx-auto text-rose-600 mb-2" />
-                <h3 className="font-script text-4xl text-gradient-gold">Sree Mahal</h3>
+                <h3 className="font-script text-4xl text-gradient-gold">Sri Mahal</h3>
                 <p className="font-serif text-lg text-rose-900/80">Kovilpatti, Tamil Nadu</p>
               </div>
               <div className="aspect-[16/10] sm:aspect-[16/8] w-full">
